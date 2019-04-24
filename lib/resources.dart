@@ -4,6 +4,7 @@ class Constants {
 }
 
 class Url {
+  String base = 'http://185.185.69.218:4000';
 
   String api;
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gotbet/models/got_answer.dart';
 import 'package:gotbet/models/got_card.dart';
 import 'profile_card_alignment.dart';
 import 'dart:math';
@@ -13,6 +14,7 @@ class CardsSectionAlignment extends StatefulWidget {
     cardsSize[0] = new Size(MediaQuery.of(context).size.width * 0.9, MediaQuery.of(context).size.height * 0.6);
     cardsSize[1] = new Size(MediaQuery.of(context).size.width * 0.85, MediaQuery.of(context).size.height * 0.55);
     cardsSize[2] = new Size(MediaQuery.of(context).size.width * 0.8, MediaQuery.of(context).size.height * 0.5);
+    this.cards = cards;
   }
 
   @override
@@ -20,6 +22,7 @@ class CardsSectionAlignment extends StatefulWidget {
 }
 
 class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerProviderStateMixin {
+  int frontCardindex = 0;
   int cardsCounter = 0;
 
   List<ProfileCardAlignment> visibleCards = new List();
@@ -41,6 +44,10 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
         visibleCards.add(new ProfileCardAlignment(
           title: card.title,
           subtitle: card.description ?? '',
+          image: Image.network(
+            card.getImageUrl(),
+            fit: BoxFit.cover,
+          ),
         ));
       } catch (e) {
         if (lastCardSet) {
@@ -50,7 +57,6 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
           lastCardSet = true;
         }
       }
-
     }
 
     frontCardAlign = cardsAlign[2];
@@ -67,6 +73,14 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
     return new Expanded(
         child: new Stack(
       children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: Text(
+            _getCurrentCardTitle(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.w600),
+          ),
+        ),
         backCard(),
         middleCard(),
         frontCard(),
@@ -100,6 +114,9 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
                       print('rightSwipe');
                     }
                     animateCards();
+                    setState(() {
+                      frontCardindex++;
+                    });
                   } else {
                     // Return to the initial rotation and alignment
                     setState(() {
@@ -141,13 +158,64 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
   }
 
   Widget frontCard() {
+    var aligment = _controller.status == AnimationStatus.forward
+        ? CardsAnimation.frontCardDisappearAlignmentAnim(_controller, frontCardAlign).value
+        : frontCardAlign;
+
+    List<GOTAnswer> answers = [];
+    var answer = '';
+    var opacity = 0.0;
+    var scale = 1.0;
+    var aligmentX = aligment.x.abs();
+
+    if (frontCardindex < widget.cards.length) {
+      answers = widget.cards[frontCardindex].answers;
+    }
+
+    if (aligmentX > 0) {
+      if (answers.isNotEmpty) {
+        answer = aligment.x < 0 ? answers[0].title : answers[1].title;
+      }
+      if (aligmentX <= 3.0) {
+        opacity = aligmentX / 3.0;
+      } else {
+        opacity = 1.0;
+      }
+
+      var maxScale = 3.0;
+
+      if (aligmentX <= maxScale - 1.0) {
+        scale = aligmentX;
+      } else {
+        scale = maxScale;
+      }
+
+    }
+
     return new Align(
-        alignment: _controller.status == AnimationStatus.forward
-            ? CardsAnimation.frontCardDisappearAlignmentAnim(_controller, frontCardAlign).value
-            : frontCardAlign,
+        alignment: aligment,
         child: new Transform.rotate(
           angle: (pi / 180.0) * frontCardRot,
-          child: new SizedBox.fromSize(size: cardsSize[0], child: visibleCards[0]),
+          child: new SizedBox.fromSize(
+              size: cardsSize[0],
+              child: Stack(
+                children: <Widget>[
+                  visibleCards[0] ?? Container(),
+                  Positioned.fill(
+                      child: Center(
+                    child: Transform.scale(
+                      scale: scale,
+                      child: Opacity(
+                        opacity: opacity,
+                        child: Text(
+                          answer,
+                          style: TextStyle(color: Colors.white, fontSize: 32.0, fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                    ),
+                  ))
+                ],
+              )),
         ));
   }
 
@@ -164,7 +232,10 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
         visibleCards[2] = new ProfileCardAlignment(
           title: card.title,
           subtitle: card.description,
-          image: Image.network(card.getImageUrl(), fit: BoxFit.cover,),
+          image: Image.network(
+            card.getImageUrl(),
+            fit: BoxFit.cover,
+          ),
         );
       }
 
@@ -189,8 +260,15 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
 
   _getFinishCard() {
     return ProfileCardAlignment(
-      title: 'на этом всё',
+      title: 'на этом пока всё',
     );
+  }
+
+  String _getCurrentCardTitle() {
+    if (cardsCounter > widget.cards.length + 1) {
+      return '';
+    }
+    return widget.cards[frontCardindex].question ?? '';
   }
 }
 
