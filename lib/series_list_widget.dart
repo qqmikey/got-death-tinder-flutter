@@ -21,9 +21,6 @@ class _SeriesListWidgetState extends State<SeriesListWidget> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          AppBar(
-            title: Text('Список серий'),
-          ),
           Expanded(
             child: ListView(
               children: _series.map((s) => SeriesListCell(episode: s, onTap: _openSeriesDetailed)).toList(),
@@ -70,6 +67,7 @@ class SeriesListCell extends StatelessWidget {
         onTap(episode);
       },
       subtitle: Text(episode.showtime),
+      trailing: Text('2/5'),
     );
   }
 }
