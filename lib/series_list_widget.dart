@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gotbet/cards/swipe_feed_page.dart';
-import 'package:gotbet/models/series_item.dart';
+import 'package:gotbet/models/episode.dart';
 
 class SeriesListWidget extends StatefulWidget {
   @override
@@ -8,7 +8,7 @@ class SeriesListWidget extends StatefulWidget {
 }
 
 class _SeriesListWidgetState extends State<SeriesListWidget> {
-  List<Series> _series = [];
+  List<Episode> _series = [];
 
   @override
   void initState() {
@@ -35,25 +35,30 @@ class _SeriesListWidgetState extends State<SeriesListWidget> {
   }
 
   void _fetchSeries() async {
-    var series = await Series.fetchAll();
+    var series = await Episode.fetchAll();
     setState(() {
       _series = series;
     });
   }
 
-  _openSeriesDetailed(Series episode) async {
+  _openSeriesDetailed(Episode episode) async {
     var _episode = await episode.fetch();
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-      return SwipeFeedPage(
-        episode: _episode,
-      );
-    }));
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return SwipeFeedPage(
+            episode: _episode,
+          );
+        },
+      ),
+    );
+    _fetchSeries();
   }
 }
 
 class SeriesListCell extends StatelessWidget {
-  Series episode;
-  Function(Series episode) onTap;
+  Episode episode;
+  Function(Episode episode) onTap;
 
   SeriesListCell({this.episode, this.onTap});
 
@@ -64,6 +69,7 @@ class SeriesListCell extends StatelessWidget {
       onTap: () {
         onTap(episode);
       },
+      subtitle: Text(episode.showtime),
     );
   }
 }

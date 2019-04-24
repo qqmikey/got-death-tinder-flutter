@@ -12,7 +12,7 @@ class Url {
   String devices;
   String profile;
 
-  String series;
+  String episodes;
 
   Url() {
     api = '$base/api/v1';
@@ -20,7 +20,7 @@ class Url {
     profile = '$api/profile';
     devices = '$api/devices';
 
-    series = '$api/series';
+    episodes = '$api/series';
   }
 
 }

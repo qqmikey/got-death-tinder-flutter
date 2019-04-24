@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gotbet/models/got_card.dart';
-import 'package:gotbet/models/series_item.dart';
+import 'package:gotbet/models/episode.dart';
 import 'cards_section_alignment.dart';
 
 class SwipeFeedPage extends StatefulWidget {
-  Series episode;
+  Episode episode;
 
   SwipeFeedPage({this.episode});
 

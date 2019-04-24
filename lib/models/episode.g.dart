@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'series_item.dart';
+part of 'episode.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Series _$SeriesFromJson(Map<String, dynamic> json) {
-  return Series()
+Episode _$EpisodeFromJson(Map<String, dynamic> json) {
+  return Episode()
     ..id = json['id'] as int
     ..title = json['title'] as String
     ..showtime = json['showtime'] as String
@@ -19,7 +19,7 @@ Series _$SeriesFromJson(Map<String, dynamic> json) {
         ?.toList();
 }
 
-Map<String, dynamic> _$SeriesToJson(Series instance) => <String, dynamic>{
+Map<String, dynamic> _$EpisodeToJson(Episode instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'showtime': instance.showtime,

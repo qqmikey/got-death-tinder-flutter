@@ -96,7 +96,7 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
                     // 20 is the "speed" at which moves the card
                     frontCardAlign = new Alignment(
                         frontCardAlign.x + 20 * details.delta.dx / MediaQuery.of(context).size.width,
-                        frontCardAlign.y + 40 * details.delta.dy / MediaQuery.of(context).size.height);
+                        frontCardAlign.y + 2 * details.delta.dy / MediaQuery.of(context).size.height);
 
                     frontCardRot = frontCardAlign.x; // * rotation speed;
                   });
@@ -109,9 +109,17 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
                   if (rightSwipe || leftSwipe) {
                     if (leftSwipe) {
                       print('leftSwipe');
+                      try {
+                        widget.cards[frontCardindex].sendAnwer(index: 0);
+                      } catch (e) {
+                      }
                     }
                     if (rightSwipe) {
                       print('rightSwipe');
+                      try {
+                        widget.cards[frontCardindex].sendAnwer(index: 1);
+                      } catch (e) {
+                      }
                     }
                     animateCards();
                     setState(() {
@@ -189,7 +197,6 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
       } else {
         scale = maxScale;
       }
-
     }
 
     return new Align(
@@ -265,10 +272,11 @@ class _CardsSectionState extends State<CardsSectionAlignment> with SingleTickerP
   }
 
   String _getCurrentCardTitle() {
-    if (cardsCounter > widget.cards.length + 1) {
+    try {
+      return widget.cards[frontCardindex].question ?? '';
+    } catch (e) {
       return '';
     }
-    return widget.cards[frontCardindex].question ?? '';
   }
 }
 
