@@ -63,11 +63,14 @@ class SeriesListCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(episode.title),
+      leading: Text(
+          '08x01'
+      ),
       onTap: () {
         onTap(episode);
       },
       subtitle: Text(episode.showtime),
-      trailing: Text('2/5'),
+      trailing: Text('Обречено 2/5'),
     );
   }
 }

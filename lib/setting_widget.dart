@@ -9,9 +9,23 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Настройки'),
+      body: Column(
+        children: <Widget>[
+          Center(
+            child: Container(
+              padding: EdgeInsets.only(top: 64.0),
+              child: RaisedButton(
+                onPressed: _authVK,
+                child: Text('Авторизоваться с помощью VK'),
+              ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  void _authVK() async {
+
   }
 }

@@ -12,9 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: ThemeData(primarySwatch: Colors.red),
       home: MainWidget(),
     );
   }
@@ -37,7 +35,10 @@ class _MainWidgetState extends State<MainWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GOT'),
+        title: Text(
+          'GOT',
+          style: TextStyle(fontFamily: 'GameOfThrones'),
+        ),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
