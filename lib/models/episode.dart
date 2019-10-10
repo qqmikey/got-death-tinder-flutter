@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 
 part 'episode.g.dart';
-var jwt  = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InJvb3QxMjIzIiwiZXhwIjoxNTU2NzIzMTUxLCJlbWFpbCI6IiJ9.sGvl7utvukJiGKvrlCC_FqPhhAZh82e5lqLvROJb82Y';
+var jwt  = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InJvb3QxMjIzIiwiZXhwIjoxNTU2ODEwNjQ3LCJlbWFpbCI6IiJ9.5uOzRiPoTsVuGUU4wrBkLA2lDSni5OwZki4Dur2_OvA';
 
 @JsonSerializable()
 class Episode {
